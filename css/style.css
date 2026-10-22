@@ -809,3 +809,63 @@ time,.hb-v,.f-no,.v-no,.w-no,.proj-meta,.f-copy{font-variant-numeric:tabular-num
 /* restore hero breathing room (the v4 .container shorthand had reset its vertical padding) */
 .hero .hero-content{padding-top:40px;padding-bottom:160px}
 @media (max-width:900px){.hero .hero-content{padding-top:56px;padding-bottom:56px}.kicker{font-size:12px;letter-spacing:.18em;margin-bottom:18px}}
+
+/* =====================================================================
+   v6 AUDIT PASS — web-design-guidelines · impeccable audit · taste
+   ===================================================================== */
+html{-webkit-tap-highlight-color:rgba(26,47,43,.12);text-size-adjust:100%}
+a,button,summary,select,input,textarea,label{touch-action:manipulation}
+.hero{min-height:100svh}
+
+/* contrast: small copper text and copper buttons reach WCAG AA (≥4.5:1) */
+.v-no,.panel-tag,.record-kicker,.b-cat,.proj-label,.g-use,.launch-items time,.timeline em{color:var(--copper-ink)}
+.btn-accent{background:#8E5733}
+.btn-accent:hover{background:#7A4A2B}
+.partner-list{color:#5F6A66}
+.w-no{-webkit-text-stroke:1.2px var(--primary)}
+
+/* hero pause control (only when the motion layer is running) */
+.motion-toggle{display:none}
+.js .motion-toggle{position:absolute;z-index:3;right:max(24px,calc((100vw - 1240px)/2 + 40px));bottom:118px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(12,22,19,.55);color:#F2EEE6;display:grid;place-items:center;transition:border-color .2s ease,background-color .2s ease,transform .16s var(--ease)}
+.motion-toggle .ic{width:16px;height:16px}
+.motion-toggle .i-play{display:none}
+.motion-toggle[aria-pressed="true"] .i-play{display:block}
+.motion-toggle[aria-pressed="true"] .i-pause{display:none}
+.motion-toggle:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){.motion-toggle:hover{border-color:#F2EEE6;background:rgba(12,22,19,.8)}}
+.motion-toggle:focus-visible{outline-color:#D9AE88}
+.motion-paused .marquee-track{animation-play-state:paused}
+.marquee:focus-within .marquee-track{animation-play-state:paused}
+@media (max-width:900px){.js .motion-toggle{top:76px;bottom:auto;right:16px;width:40px;height:40px}}
+
+/* focus on dark bands stays visible */
+.hero :focus-visible,.process :focus-visible,.cta :focus-visible,.footer :focus-visible{outline-color:#D9AE88}
+
+/* form */
+.field select{color:var(--fg);background-color:#fff}
+.form-note a{color:var(--primary);text-decoration:underline;text-underline-offset:3px}
+
+/* footer: comfortable hit areas */
+.f-nav a{padding:6px 0}
+.f-links a{display:inline-block;padding:6px 0}
+.to-top{bottom:max(28px,env(safe-area-inset-bottom))}
+
+/* privacy / document page */
+.doc-page .gnb{position:sticky}
+.doc-page .gnb-inner{max-width:1240px}
+.doc{max-width:820px;padding-top:var(--s7);padding-bottom:var(--s8)}
+.doc .h2{margin-bottom:var(--s3)}
+.doc-lead{font-size:18px;line-height:1.85;color:var(--text);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}
+.doc h2:not(.h2){font-size:20px;color:var(--ink);margin:var(--s5) 0 var(--s2);letter-spacing:-.015em}
+.doc p{color:var(--text)}
+.doc ul{margin-top:var(--s2);padding-left:0}
+.doc ul li{position:relative;padding:4px 0 4px 16px}
+.doc ul li::before{content:"";position:absolute;left:0;top:16px;width:5px;height:5px;background:var(--accent)}
+.doc-dl{margin:var(--s2) 0;border-top:2px solid var(--ink)}
+.doc-dl div{display:grid;grid-template-columns:120px 1fr;padding:14px 0;border-bottom:1px solid var(--line)}
+.doc-dl dt{font-weight:600;color:var(--ink)}
+.doc-dl a{color:var(--primary);text-decoration:underline;text-underline-offset:3px}
+.doc-back{margin-top:var(--s6)}
+.doc-page .footer{padding:40px 0}
+.doc-page .f-copy{margin-top:12px}
+@media (max-width:900px){.doc{padding-top:var(--s6)}.doc-dl div{grid-template-columns:88px 1fr}}

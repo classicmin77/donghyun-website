@@ -149,20 +149,37 @@
   // Travellers: every light leaves at the same moment, rides its route, then the D stroke,
   // and all arrive together on the H crossbar — where the copper bar flashes ("meet").
   const CYCLE = 4.8, ARRIVE = 0.72, START = 1.8, DASH = 150;
+  const loops = []; // endless background loops — paused by the toggle, off-screen and in hidden tabs
   document.querySelectorAll('.rt-flow').forEach(p => {
     const l = p.getTotalLength();
     p.style.strokeDasharray = `${DASH} ${l + DASH}`;
     const end = -(l - DASH);
     const loop = { duration: CYCLE, delay: START, repeat: Infinity, ease: 'linear' };
-    animate(p, { strokeDashoffset: [DASH, end, end] }, { ...loop, times: [0, ARRIVE, 1] });
-    animate(p, { opacity: [0, 1, 1, 0, 0] }, { ...loop, times: [0, 0.05, ARRIVE, ARRIVE + 0.05, 1] });
+    loops.push(animate(p, { strokeDashoffset: [DASH, end, end] }, { ...loop, times: [0, ARRIVE, 1] }));
+    loops.push(animate(p, { opacity: [0, 1, 1, 0, 0] }, { ...loop, times: [0, 0.05, ARRIVE, ARRIVE + 0.05, 1] }));
   });
-  animate('.meet', { opacity: [0, 0, 0.95, 0], r: [8, 8, 30, 46] },
-    { duration: CYCLE, times: [0, ARRIVE - 0.01, ARRIVE + 0.03, ARRIVE + 0.2], delay: START, repeat: Infinity, ease: 'easeOut' });
-  animate('.gate-cu', { filter: ['brightness(1)', 'brightness(1)', 'brightness(1.6)', 'brightness(1)'] },
-    { duration: CYCLE, times: [0, ARRIVE - 0.01, ARRIVE + 0.03, ARRIVE + 0.25], delay: START, repeat: Infinity });
-  animate('.pulse', { r: [5, 18], opacity: [0.8, 0] }, { duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: stagger(1.2) });
-  animate('.hv-glow', { opacity: [0.6, 1, 0.6] }, { duration: 6, repeat: Infinity, ease: 'easeInOut' });
+  loops.push(animate('.meet', { opacity: [0, 0, 0.95, 0], r: [8, 8, 30, 46] },
+    { duration: CYCLE, times: [0, ARRIVE - 0.01, ARRIVE + 0.03, ARRIVE + 0.2], delay: START, repeat: Infinity, ease: 'easeOut' }));
+  loops.push(animate('.gate-cu', { filter: ['brightness(1)', 'brightness(1)', 'brightness(1.6)', 'brightness(1)'] },
+    { duration: CYCLE, times: [0, ARRIVE - 0.01, ARRIVE + 0.03, ARRIVE + 0.25], delay: START, repeat: Infinity }));
+  loops.push(animate('.pulse', { r: [5, 18], opacity: [0.8, 0] }, { duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: stagger(1.2) }));
+  loops.push(animate('.hv-glow', { opacity: [0.6, 1, 0.6] }, { duration: 6, repeat: Infinity, ease: 'easeInOut' }));
+
+  const toggle = document.querySelector('.motion-toggle');
+  let userPaused = false, heroVisible = true;
+  const syncLoops = () => {
+    const run = !userPaused && heroVisible && !document.hidden;
+    loops.forEach(a => run ? a.play() : a.pause());
+    document.documentElement.classList.toggle('motion-paused', userPaused);
+  };
+  if (toggle) toggle.addEventListener('click', () => {
+    userPaused = !userPaused;
+    toggle.setAttribute('aria-pressed', String(userPaused));
+    toggle.setAttribute('aria-label', userPaused ? '배경 애니메이션 재생' : '배경 애니메이션 일시정지');
+    syncLoops();
+  });
+  new IntersectionObserver(([en]) => { heroVisible = en.isIntersecting; syncLoops(); }).observe(document.querySelector('.hero'));
+  document.addEventListener('visibilitychange', syncLoops);
   animate('.kicker', { opacity: [0, 1], y: [12, 0] }, { duration: 0.6, delay: 0.2, ease });
   animate('.hero-title .ln > span', { y: ['110%', '0%'] }, { duration: 0.9, delay: stagger(0.1, { startDelay: 0.3 }), ease });
   animate('.hero-lead, .hero-cta', { opacity: [0, 1], y: [16, 0] }, { duration: 0.7, delay: stagger(0.1, { startDelay: 0.7 }), ease });
