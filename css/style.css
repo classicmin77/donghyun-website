@@ -735,3 +735,77 @@ p{color:inherit}
   .flow li,.flow li+li{padding:var(--s3) var(--s2) var(--s2) 0!important}
   .panel-body{padding:var(--s3) var(--s3) var(--s4)!important}
 }
+
+/* =====================================================================
+   v5 DETAIL PASS — emil-design-eng · impeccable · taste
+   ===================================================================== */
+:root{--ease:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.77,0,.175,1)}
+::selection{background:var(--primary);color:#F2EEE6}
+
+/* type: balanced headings, no orphan words, aligned figures */
+.hero-title,.h2,h3,h4{text-wrap:balance}
+p,li,dd{text-wrap:pretty}
+time,.hb-v,.f-no,.v-no,.w-no,.proj-meta,.f-copy{font-variant-numeric:tabular-nums}
+
+/* buttons: one radius, exact properties, press feedback */
+.btn,.gnb-util .btn-sm{border-radius:4px}
+.btn{transition:background-color .2s ease,color .2s ease,border-color .2s ease,transform .16s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn .ic,.text-link span{transition:transform .25s var(--ease)}
+.btn-accent::after{display:none}                       /* drop the gradient sheen (animated `left`) */
+
+/* header */
+.gnb{transition:transform .3s var(--ease),box-shadow .2s ease}
+.menu a::after{transform-origin:0 50%;transition:transform .3s var(--ease)}
+.lang .soon{cursor:default;opacity:.7}
+.mobile-menu{transition:opacity .2s ease,transform .2s var(--ease),visibility 0s linear .2s}
+.mobile-menu.open{transition:opacity .2s ease,transform .2s var(--ease),visibility 0s}
+.burger{border-radius:4px;transition:transform .16s var(--ease)}
+.burger:active{transform:scale(.94)}
+
+/* hero bar: solid band instead of glass */
+.hero-bar{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(12,22,19,.78)}
+
+/* cards & images */
+.panel-img img{transition:transform .9s var(--ease)}
+.panel:hover{box-shadow:0 24px 48px -36px rgba(17,24,22,.32)}
+.dcard{transition:border-color .2s ease,transform .3s var(--ease)}
+.dcard:hover{box-shadow:none;transform:translateY(-3px)}
+.proj-feature img{width:100%;height:auto}
+
+/* links */
+.board a,.f-nav a,.contact-cards a{transition:color .15s ease}
+.board a{text-decoration-thickness:1px}
+.f-nav a{display:inline-block;padding:2px 0}
+
+/* form: clear focus, error and select states */
+.field input,.field select,.field textarea{caret-color:var(--primary);transition:border-color .15s ease,box-shadow .15s ease}
+.field input::placeholder,.field textarea::placeholder{color:#8B9490}
+.field select{appearance:none;-webkit-appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%231A2F2B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center}
+.field .invalid{border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,.12)}
+.field .invalid:focus{border-color:#C0392B}
+
+/* back-to-top: enter from below, press feedback */
+.to-top{transform:translateY(8px);transition:opacity .2s ease,transform .25s var(--ease),border-color .2s ease}
+.to-top.show{transform:none}
+.to-top.show:active{transform:scale(.94)}
+
+/* touch devices: no sticky hover states */
+@media (hover:none){
+  .panel:hover .panel-img img,.btn:hover .ic,.text-link:hover span,.dcard:hover{transform:none}
+  .panel:hover{box-shadow:none}
+  .marquee:hover .marquee-track{animation-play-state:running}
+}
+@media (hover:hover) and (pointer:fine){
+  .to-top.show:hover{border-color:var(--primary)}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn:active,.to-top.show:active,.burger:active{transform:none}
+  .to-top{transform:none}
+  .dcard:hover,.panel:hover .panel-img img{transform:none}
+}
+/* hero headline stays on two lines on phones */
+@media (max-width:600px){.hero-title{font-size:clamp(28px,8.2vw,40px);line-height:1.25}}
+/* restore hero breathing room (the v4 .container shorthand had reset its vertical padding) */
+.hero .hero-content{padding-top:40px;padding-bottom:160px}
+@media (max-width:900px){.hero .hero-content{padding-top:56px;padding-bottom:56px}.kicker{font-size:12px;letter-spacing:.18em;margin-bottom:18px}}

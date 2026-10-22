@@ -59,14 +59,15 @@
   const io = new IntersectionObserver(entries => entries.forEach(en => {
     if (en.isIntersecting) links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + en.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
-  ['about', 'business', 'products', 'projects', 'news', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
+  ['about', 'business', 'track-record', 'news', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
 
   // Partners marquee: duplicate items for seamless loop (CSS-driven)
   const track = document.querySelector('.marquee-track');
   if (track && !reduce) track.querySelectorAll('li').forEach(li => { const c = li.cloneNode(true); c.setAttribute('aria-hidden', 'true'); track.appendChild(c); });
 
   // Spotlight cards: copper glow follows the pointer
-  document.querySelectorAll('.dcard, .panel, .gift, .why-item, .value').forEach(card => {
+  // (pointer devices only: touch taps would leave the glow stuck)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) document.querySelectorAll('.dcard, .panel, .gift, .why-item, .value').forEach(card => {
     card.classList.add('spot');
     card.addEventListener('pointermove', e => {
       const r = card.getBoundingClientRect();
@@ -78,7 +79,7 @@
   if (!M || reduce) return;
   document.documentElement.classList.add('js');
   const { animate, inView, scroll, stagger } = M;
-  const ease = [0.22, 0.61, 0.36, 1];
+  const ease = [0.23, 1, 0.32, 1]; // strong ease-out: fast start, soft landing
   const desktop = window.matchMedia('(min-width: 901px)').matches;
 
   // ---------- Motion pack v3 ----------
@@ -105,7 +106,7 @@
   const band = document.querySelector('.kinetic');
   if (band) {
     scroll(animate('.k1', { x: ['0%', '-30%'] }, { ease: 'linear' }), { target: band, offset: ['start end', 'end start'] });
-    scroll(animate('.k2', { x: ['-30%', '0%'] }, { ease: 'linear' }), { target: band, offset: ['start end', 'end start'] });
+    if (band.querySelector('.k2')) scroll(animate('.k2', { x: ['-30%', '0%'] }, { ease: 'linear' }), { target: band, offset: ['start end', 'end start'] });
   }
 
   // 3. Curtain reveal on key images
