@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://classicmin77.github.io/donghyun-website/sitemap.xml

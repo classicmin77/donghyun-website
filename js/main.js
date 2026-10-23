@@ -5,6 +5,7 @@
   const burger = document.querySelector('.burger');
   const mobile = document.querySelector('.mobile-menu');
   const toTop = document.querySelector('.to-top');
+  const en = document.documentElement.lang === 'en';
 
   // Header: hide on scroll down, show on scroll up; shadow after hero start
   let lastY = window.scrollY;
@@ -18,7 +19,7 @@
   onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
 
   // Mobile menu
-  const setMenu = open => { mobile.classList.toggle('open', open); burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기'); };
+  const setMenu = open => { mobile.classList.toggle('open', open); burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? (en ? 'Close menu' : '메뉴 닫기') : (en ? 'Open menu' : '메뉴 열기')); };
   burger.addEventListener('click', () => setMenu(!mobile.classList.contains('open')));
   mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
@@ -32,10 +33,14 @@
     form.querySelector('.form-error').hidden = ok;
     if (!ok) { req.find(f => !f.value.trim()).focus(); return; }
     const v = n => form.elements[n].value.trim();
-    const subject = `[동현 사업문의] ${v('type')} / ${v('company') || v('name')}`;
-    const body = ['문의 분야: ' + v('type'), '회사명: ' + v('company'), '담당자명: ' + v('name'), '연락처: ' + v('tel'), '', '문의 내용', v('msg')].join('\r\n');
+
+    const L = en
+      ? { tag: '[DONGHYUN Inquiry]', type: 'Inquiry type: ', company: 'Company: ', name: 'Contact name: ', tel: 'Phone: ', msg: 'Message', note: 'If your mail app does not open, please email skinmall@naver.com directly. This page does not submit inquiries automatically.' }
+      : { tag: '[동현 사업문의]', type: '문의 분야: ', company: '회사명: ', name: '담당자명: ', tel: '연락처: ', msg: '문의 내용', note: '메일 앱이 열리지 않으면 skinmall@naver.com으로 직접 보내주세요. 이 페이지에서 문의가 자동 접수되지는 않습니다.' };
+    const subject = `${L.tag} ${v('type')} / ${v('company') || v('name')}`;
+    const body = [L.type + v('type'), L.company + v('company'), L.name + v('name'), L.tel + v('tel'), '', L.msg, v('msg')].join('\r\n');
     const status = form.querySelector('.form-status');
-    if (status) { status.hidden = false; status.textContent = '메일 앱이 열리지 않으면 skinmall@naver.com으로 직접 보내주세요. 이 페이지에서 문의가 자동 접수되지는 않습니다.'; }
+    if (status) { status.hidden = false; status.textContent = L.note; }
     location.href = `mailto:skinmall@naver.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
 
@@ -131,12 +136,7 @@
     });
   }
 
-  // 6. Hero bar numbers count up
-  document.querySelectorAll('.hb-v').forEach((el, i) => {
-    const t = el.textContent.trim(); if (!/^\d+$/.test(t)) return;
-    const to = +t, pad = t.length, from = to > 100 ? to - 25 : 0;
-    animate(from, to, { duration: 1.4, delay: 1.1 + i * 0.1, ease, onUpdate: v => { el.textContent = String(Math.round(v)).padStart(pad, '0'); } });
-  });
+  // 6. (removed) hero bar count-up — a counting year read as "1990", so values stay static
 
   // Hero entrance: restrained, corporate timing
   // Hero visual: gateway mark draws, routes flow toward it continuously
@@ -175,7 +175,7 @@
   if (toggle) toggle.addEventListener('click', () => {
     userPaused = !userPaused;
     toggle.setAttribute('aria-pressed', String(userPaused));
-    toggle.setAttribute('aria-label', userPaused ? '배경 애니메이션 재생' : '배경 애니메이션 일시정지');
+    toggle.setAttribute('aria-label', userPaused ? (en ? 'Play background animation' : '배경 애니메이션 재생') : (en ? 'Pause background animation' : '배경 애니메이션 일시정지'));
     syncLoops();
   });
   new IntersectionObserver(([en]) => { heroVisible = en.isIntersecting; syncLoops(); }).observe(document.querySelector('.hero'));

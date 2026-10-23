@@ -869,3 +869,8 @@ a,button,summary,select,input,textarea,label{touch-action:manipulation}
 .doc-page .footer{padding:40px 0}
 .doc-page .f-copy{margin-top:12px}
 @media (max-width:900px){.doc{padding-top:var(--s6)}.doc-dl div{grid-template-columns:88px 1fr}}
+
+/* 2026-10-23: news items are plain titles (no link), language switch */
+.board .b-title{font-size:16px;font-weight:500;color:var(--ink)}
+.lang a{color:inherit;transition:color .15s ease}
+.lang a:hover{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
