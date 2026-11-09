@@ -901,3 +901,7 @@ a,button,summary,select,input,textarea,label{touch-action:manipulation}
 }
 .f-info a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.35);transition:color .15s ease}
 .f-info a:hover{color:#fff;text-decoration-color:currentColor}
+/* 2026-11-09: section order business → process → detail → projects → history → news; keep grey/white alternating */
+.track{background:var(--soft);border-top:0}
+.news{background:#fff}
+.history>li::after{border-color:var(--soft)}
