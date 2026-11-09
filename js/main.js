@@ -146,17 +146,17 @@
   animate('.gate-cu', { opacity: [0, 1], scaleX: [0, 1] }, { duration: 0.6, delay: 1.3, ease });
   animate('.node', { opacity: [0, 1] }, { duration: 0.6, delay: 1.0, ease });
   animate('.rt-base', { opacity: [0, 1] }, { duration: 1.2, delay: stagger(0.08), ease });
-  // Travellers: every light leaves at the same moment, rides its route, then the D stroke,
-  // and all arrive together on the H crossbar — where the copper bar flashes ("meet").
+  // Travellers: every light leaves at the same moment, rides its route to the edge of the mark
+  // (they no longer trace the D, which read as a doubled logo), then the copper bar flashes ("meet").
   const CYCLE = 4.8, ARRIVE = 0.72, START = 1.8, DASH = 150;
   const loops = []; // endless background loops — paused by the toggle, off-screen and in hidden tabs
   document.querySelectorAll('.rt-flow').forEach(p => {
     const l = p.getTotalLength();
     p.style.strokeDasharray = `${DASH} ${l + DASH}`;
-    const end = -(l - DASH);
     const loop = { duration: CYCLE, delay: START, repeat: Infinity, ease: 'linear' };
-    loops.push(animate(p, { strokeDashoffset: [DASH, end, end] }, { ...loop, times: [0, ARRIVE, 1] }));
-    loops.push(animate(p, { opacity: [0, 1, 1, 0, 0] }, { ...loop, times: [0, 0.05, ARRIVE, ARRIVE + 0.05, 1] }));
+    // the dash runs fully into the node and fades as it arrives, so nothing snaps off
+    loops.push(animate(p, { strokeDashoffset: [DASH, -l, -l] }, { ...loop, times: [0, ARRIVE, 1], ease: ['easeIn', 'linear'] }));
+    loops.push(animate(p, { opacity: [0, 1, 1, 0, 0] }, { ...loop, times: [0, 0.1, ARRIVE - 0.12, ARRIVE, 1], ease: 'easeInOut' }));
   });
   loops.push(animate('.meet', { opacity: [0, 0, 0.95, 0], r: [8, 8, 30, 46] },
     { duration: CYCLE, times: [0, ARRIVE - 0.01, ARRIVE + 0.03, ARRIVE + 0.2], delay: START, repeat: Infinity, ease: 'easeOut' }));
